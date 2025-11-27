@@ -1,16 +1,35 @@
+
 import { Products } from "../model/TodoSchema.js";
 import type { Request,Response } from "express";
+import type { ObjectId } from "mongoose";
 
 
 ///////////////////// get Todo //////////////////////////////////
 
-export async function getProduct(req:Request,res:Response):Promise<void> {
+interface Product{
+    
+    
+        ProductName:string;
+        Description:string;
+        Price: number;
+        Quantity: number;
+       
+   }
+type Message = {
+    message:string | Product[]
+    success:boolean
+}
+
+export async function getProduct(req:Request,res:Response<Message>):Promise<void> {
     try{
+        
         const showTodo = await Products.find({})
         if(!showTodo){
-            res.status(404).json({message:"something wrong",success:true})
+             res.status(404).json({message:"something wrong",success:true})
+             return;
         }
-            res.status(200).json({message:showTodo,success:true })
+             res.status(200).json({message:showTodo ,success:true })
+             return;
        
         } catch(err){
             console.log(err);
@@ -21,7 +40,7 @@ export async function getProduct(req:Request,res:Response):Promise<void> {
 
 /////////////////// Post Todo //////////////////////////////////////
 
-export async function postProduct(req:Request,res:Response): Promise<void> {
+export async function postProduct(req:Request,res:Response):Promise<void> {
     try{
 
         const{ProductName,Description,Price,Quantity}=req.body;
@@ -40,25 +59,27 @@ export async function postProduct(req:Request,res:Response): Promise<void> {
             Quantity
         })
        
-        res.status(200).json({message:newList,success:true})
+         res.status(200).json({message:newList,success:true})
+         return;
         
         
 
     }catch(err){
         console.log(err);
         res.status(404).json({message:'something error',success:false})
+        return
         
     }
 }
 
 ////////////////////////// Update Todo /////////////////////////////////
 
+type UseId = {
+    id : string;
+}
 
- interface UseParams {
-            id : string;
-        }
 
-export async function putProduct(req:Request<UseParams>,res:Response):Promise<void> {
+export async function putProduct(req:Request<UseId>,res:Response):Promise<void> {
     try{
      
         const id = req.params.id
@@ -66,8 +87,10 @@ export async function putProduct(req:Request<UseParams>,res:Response):Promise<vo
         const newUpdate = await Products.findByIdAndUpdate(id,req.body)
         if(!newUpdate){
             res.status(404).json({message:"something error",success:false})
+            return;
         }
-            res.status(200).json({message:newUpdate,success:true})
+            res.status(200).json({message:"updated successful",success:true})
+            return;
 
     }catch(err){
         console.log(err);
@@ -81,15 +104,17 @@ export async function putProduct(req:Request<UseParams>,res:Response):Promise<vo
 ////////////////////////////////////////////// Delete Product ///////////////////////////////////////////////
 
 
-export async function deleteProduct(req:Request<UseParams>,res:Response):Promise<void>{
+export async function deleteProduct(req:Request<UseId>,res:Response):Promise<void>{
     try{
         const id=req.params.id
 
         const deletee = await Products.findByIdAndDelete(id)
         if(!deletee){
-           res.status(404).json({message:"something error",success:false})  
+            res.status(404).json({message:"something error",success:false}) 
+            return; 
         }
-           res.status(200).json({message:"product deleted",success:true})
+            res.status(200).json({message:"product deleted",success:true})
+            return;
 
     }catch(err){
         console.log(err);

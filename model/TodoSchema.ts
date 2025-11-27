@@ -1,10 +1,10 @@
 import {Document, model, Schema} from "mongoose";
 
 export interface Todo extends Document{
-    ProductName?:string;
-    Description?:string;
-    Price?:number;
-    Quantity?:number;
+    ProductName:string;
+    Description:string;
+    Price:number;
+    Quantity:number;
 
 
 }
