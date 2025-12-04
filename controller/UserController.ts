@@ -4,7 +4,7 @@ import type { Request,Response } from "express";
 import type { ObjectId } from "mongoose";
 
 
-///////////////////// get Todo //////////////////////////////////
+///////////////////// get Product //////////////////////////////////
 
 interface Product{
     
@@ -38,7 +38,7 @@ export async function getProduct(req:Request,res:Response<Message>):Promise<void
     
 }
 
-/////////////////// Post Todo //////////////////////////////////////
+/////////////////// Post Product //////////////////////////////////////
 
 export async function postProduct(req:Request,res:Response):Promise<void> {
     try{
@@ -72,7 +72,7 @@ export async function postProduct(req:Request,res:Response):Promise<void> {
     }
 }
 
-////////////////////////// Update Todo /////////////////////////////////
+////////////////////////// Update Product /////////////////////////////////
 
 type UseId = {
     id : string;
